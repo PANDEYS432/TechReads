@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/usersModel.jsx");
 const bcrypt = require("bcryptjs");
 const jwt= require("jsonwebtoken");
+const authMiddleware = require("../middlewares/authMiddleware.jsx");
 // register a new user
 
 //normal call back always async cll and try catch block
@@ -77,5 +78,68 @@ router.post("/login", async(req,res)=>{
   });
 }
 });
+// get logged in user details
+router.get("/get-logged-in-user", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.body.userIdFromToken);
+    if (!user) {
+      return res.send({
+        success: false,
+        message: "User does not exist",
+      });
+    }
+    return res.send({
+      success: true,
+      message: "User details fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    return res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+// get all the users (patrons)
+router.get("/get-all-users/:role", authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find({ role: req.params.role }).sort({
+      createdAt: -1,
+    });
+    return res.send({
+      success: true,
+      message: "Users fetched successfully",
+      data: users,
+    });
+  } catch (error) {
+    return res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
+// get user by id
+router.get("/get-user-by-id/:id", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.send({
+        success: false,
+        message: "User does not exist",
+      });
+    }
+    return res.send({
+      success: true,
+      message: "User fetched successfully",
+      data: user,
+    });
+
+  } catch (error) {
+    return res.send({
+      success: false,
+      message: 'User does not exist',
+    });
+  }
+});
 module.exports = router;

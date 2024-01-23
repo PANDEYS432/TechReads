@@ -1,22 +1,36 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, message } from "antd";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../../apicalls/users";
+import { useDispatch } from "react-redux";
+import { HideLoading, ShowLoading } from "../../redux/loadersSlice";
 function Register() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onFinish= async(values)=>{
    try {
+    dispatch(ShowLoading());
     const response = await RegisterUser(values);
+    dispatch(HideLoading());
     if(response.success){
       message.success(response.message);
+      navigate("/login");
     }else{
       message.error(response.message);
     }
     
    } catch (error) {
+    dispatch(HideLoading());
     message.error(error.message);
    }
-  }
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="h-screen bg-primary flex items-center justify-center">
     <div className="authentication-form bg-white p-3 rounded" >
