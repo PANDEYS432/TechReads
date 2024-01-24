@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/home";
-import Login from "./pages/login";
-import Register from "./pages/register";
+import Home from "./pages/home/index.jsx";
+import Login from "./pages/login/index.jsx";
+import Register from "./pages/register/index.jsx";
 
 import "./stylesheets/alignments.css";
 import "./stylesheets/theme.css";
@@ -12,21 +12,45 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
+import BookDescription from "./pages/BookDescription";
+
 function App() {
   const { loading } = useSelector((state) => state.loaders);
   return (
-   <div> 
-    {loading && <Loader />}
-   <BrowserRouter>
-   <Routes>
-    <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/register" element={<Register />} />
+    <div>
+      {loading && <Loader />}
 
-   </Routes>
-   </BrowserRouter>
-   </div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/book/:id"
+            element={
+              <ProtectedRoute>
+                <BookDescription />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
