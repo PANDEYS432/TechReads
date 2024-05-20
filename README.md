@@ -13,3 +13,20 @@ Welcome to the **TechReads**! This web application is designed to help manage th
 - **Book Returns:** Manage the return of books and update the inventory.
 - **Overdue Tracking:** Track and notify users of overdue books.
 - **Fine Management:** Calculate and manage fines for overdue books.
+
+   ## Technologies Used
+
+- **Frontend:**
+  - **HTML, CSS, JavaScript**
+  - **React.js** for a dynamic user interface
+
+- **Backend:**
+  - **Node.js** with **Express.js** for the server
+  - **MongoDB** for the database
+
+- **Authentication:**
+  - **JSON Web Tokens (JWT)** for secure authentication
+
+- **Other Tools:**
+  - **Git** for version control
+ 
